@@ -1,25 +1,36 @@
 package top.ilum.amenity.ui.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import butterknife.ButterKnife
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolygonOptions
 import kotlinx.android.synthetic.main.fragment_home.*
 import top.ilum.amenity.R
+import kotlin.math.roundToInt
+
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
+    private val positions: MutableList<LatLng> = ArrayList()
     lateinit var mapView: MapView
     lateinit var googleMap: GoogleMap
+    private var source = 0
+    private var destination = 1
+
+    private var isMapMoveable = false
+    private var screenLeave = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,24 +38,63 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         val v = inflater.inflate(R.layout.fragment_home, container, false)
+        activity?.let { ButterKnife.bind(it) }
         mapView = v.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
-        mapView.onResume()
         try {
             MapsInitializer.initialize(activity?.applicationContext)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         mapView.getMapAsync(this)
         return v
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btnCreatePolygon.text = "Выбрать фрагмент"
+        btnCreatePolygon.text = getString(R.string.txt_choose_fragment)
         btnCreatePolygon.setOnClickListener {
-            btnCreatePolygon.text = "Выберите точки на карте"
-            createPolygon()
+            isMapMoveable = true
+            btnCreatePolygon.visibility = View.GONE
+            positions.removeAll(positions)
+            googleMap.clear()
         }
+        frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
+            if (isMapMoveable) {
+                val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
+                val latLng = googleMap.projection.fromScreenLocation(point)
+                val latitude = latLng.latitude
+                val longitude = latLng.longitude
+
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        positions.add(LatLng(latitude, longitude))
+                        screenLeave = false
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        positions.add(LatLng(latitude, longitude))
+                        screenLeave = false
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        isMapMoveable = false
+                        source = 0
+                        destination = 1
+                        btnCreatePolygon.visibility = View.VISIBLE
+                        drawPolygon()
+                    }
+                }
+            }
+
+            return@OnTouchListener isMapMoveable
+        })
+    }
+
+    private fun drawPolygon() {
+        val polygonOptions = PolygonOptions()
+        polygonOptions.addAll(positions)
+        polygonOptions.strokeColor(Color.RED)
+            .fillColor(resources.getColor(R.color.polygonColor))
+        googleMap.addPolygon(polygonOptions)
     }
 
     override fun onResume() {
@@ -65,25 +115,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
-    }
-
-    private fun createPolygon() {
-        val positions = ArrayList<LatLng>()
-        googleMap.setOnMapClickListener { latLng -> positions += latLng
-            btnCreatePolygon.text = "Готово"
-            googleMap.addCircle(
-                CircleOptions().center(latLng).radius(1.0).strokeColor(Color.RED).fillColor(
-                    Color.RED))
-        }
-        btnCreatePolygon.setOnClickListener {
-            val polygonOptions = PolygonOptions()
-            positions.forEach {
-                polygonOptions.add(it)
-            }
-            polygonOptions.strokeColor(Color.RED).fillColor(Color.parseColor("#50FFB7B7"))
-            googleMap.addPolygon(polygonOptions)
-            btnCreatePolygon.text = "Выбрать фрагмент"
-        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
