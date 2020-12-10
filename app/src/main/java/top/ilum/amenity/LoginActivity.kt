@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.Visibility
+import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.*
 import org.json.JSONObject
@@ -17,6 +22,20 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val message = intent.getBooleanExtra(
+            "networking",
+            false
+        ) //Check if no network message was passed and notify a user
+        if (message) {
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.unavailable),
+                Snackbar.LENGTH_LONG
+            ).show()
+            findViewById<ImageView>(R.id.no_network_image).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.no_network_message).visibility = View.VISIBLE
+        }
 
         val loginButton = findViewById<Button>(R.id.login)
         val username = findViewById<EditText>(R.id.nav_username)
@@ -94,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
 
 
             } else {
-
+                hide()
                 Snackbar.make(it, getString(R.string.fill_auth), Snackbar.LENGTH_LONG).show()
             }
 

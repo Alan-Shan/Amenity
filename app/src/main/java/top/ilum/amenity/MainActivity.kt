@@ -16,6 +16,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import top.ilum.amenity.data.User
 import top.ilum.amenity.utils.Builder
 import top.ilum.amenity.utils.Endpoints
 
@@ -42,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -17,4 +17,5 @@
     <string name="access_denied">Пожалуйста, проверьте данные авторизации.</string>
     <string name="unavailable">К сожалению, сервис в настоящий момент недоступен.</string>
     <string name="txt_choose_fragment">Выбрать фрагмент</string>
+    <string name="connection_error">Ошибка подключения</string>
 </resources>
