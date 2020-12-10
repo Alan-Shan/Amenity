@@ -1,7 +1,10 @@
 package top.ilum.amenity
 
+import SharedPrefs
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -13,6 +16,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import top.ilum.amenity.utils.Builder
+import top.ilum.amenity.utils.Endpoints
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -37,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        SharedPrefs.setup(this) // Initialize SP object
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,6 +53,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
+
+        val navigationUsername =
+            findViewById<TextView>(R.id.nav_username) /// Setting textviews for NavBar username/email
+        val navigationEmail =
+            findViewById<TextView>(R.id.nav_email) /// Setting textviews for NavBar username/email
+        navigationEmail.text = SharedPrefs.email /// Setting textviews for NavBar username/email
+        navigationUsername.text = SharedPrefs.name /// Setting textviews for NavBar username/email
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
