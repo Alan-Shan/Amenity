@@ -12,7 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import top.ilum.amenity.R
 import top.ilum.amenity.data.User
-//import top.ilum.amenity.data.Users
 import top.ilum.amenity.utils.Builder
 import top.ilum.amenity.utils.Endpoints
 

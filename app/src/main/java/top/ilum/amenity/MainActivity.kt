@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        SharedPrefs.setup(this) // Initialize SP object
+//        SharedPrefs.setup(this) // Initialize SP object
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
