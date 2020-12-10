@@ -12,7 +12,6 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SharedPrefs.setup(this) // Initialize SP object
-        SharedPrefs.refreshToken = null
         if (SharedPrefs.refreshToken != null) {
             startActivity(Intent(this, MainActivity::class.java))
             this.finish()
