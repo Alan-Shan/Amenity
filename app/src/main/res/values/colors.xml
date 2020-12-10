@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#000051</color>
     <color name="colorAccent">#534bae</color>
     <color name="polygonColor">#50F69E9E</color>
+    <color name="additionalTextColor">#7A7A7A</color>
 </resources>
