@@ -1,6 +1,7 @@
 package top.ilum.amenity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -10,13 +11,14 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_start)
         SharedPrefs.setup(this) // Initialize SP object
-
+        SharedPrefs.refreshToken = null
         if (SharedPrefs.refreshToken != null) {
             startActivity(Intent(this, MainActivity::class.java))
             this.finish()
-
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            this.finish()
         }
     }
 

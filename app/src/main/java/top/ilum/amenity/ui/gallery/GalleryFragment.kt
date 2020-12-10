@@ -25,16 +25,18 @@ class GalleryFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_gallery, container, false)
         val textView: TextView = root.findViewById(R.id.text_gallery)
 
-        val request = Builder.buildService(Endpoints::class.java)
+        val request = Builder.buildService(Endpoints::class.java, this.requireContext())
         val call = request.getUsers()
         call.enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 if (response.isSuccessful) {
                     Log.e("rest", response.toString())
                 }
+                Log.e("nsrest", response.toString())
             }
 
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                Log.e("rest", t.toString())
             }
         })
         textView.text = "as"

@@ -10,4 +10,11 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="action_sign_in">Вход</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="base_url">http://95.216.218.198</string>
+    <string name="fill_auth">Пожалуйста, введите логин и пароль.</string>
+    <string name="access_denied">Пожалуйста, проверьте данные авторизации.</string>
+    <string name="unavailable">К сожалению, сервис в настоящий момент недоступен.</string>
 </resources>

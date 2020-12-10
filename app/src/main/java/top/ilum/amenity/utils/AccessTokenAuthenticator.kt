@@ -1,13 +1,18 @@
 package top.ilum.amenity.utils
 
-import android.util.Log
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import okhttp3.*
 import org.json.JSONObject
+import top.ilum.amenity.LoginActivity
+import top.ilum.amenity.StartActivity
 
 /**
 Token refresher on 401
  */
-class AccessTokenAuthenticator() : Authenticator {
+class AccessTokenAuthenticator(context: Context) : Authenticator {
+    private val appContext = context
 
     override fun authenticate(route: Route?, response: Response): Request? {
         synchronized(this) {
@@ -37,15 +42,20 @@ class AccessTokenAuthenticator() : Authenticator {
                     val tokenBody = response.body?.string().toString()
                     val tokenJson = JSONObject(tokenBody)
                     val token = tokenJson.getString("token")
-                    val refreshBody = response.body?.string().toString()
-                    val refreshJson = JSONObject(refreshBody)
-                    rt = refreshJson.getString("refresh_token")
+                    rt = tokenJson.getString("refresh_token")
                     // Cascade used on a reason, don't change anything if you don't want issues with JSON deserialization
                     SharedPrefs.refreshToken = rt
                     SharedPrefs.token = token
                     return token
+                } else {
+                    startActivity(appContext, Intent(appContext, LoginActivity::class.java), null)
                 }
             }
+            startActivity(
+                StartActivity::getApplicationContext as Context,
+                Intent(StartActivity::getApplicationContext as Context, LoginActivity::class.java),
+                null
+            )
         }
         return null
 
