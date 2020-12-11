@@ -2,13 +2,18 @@ package top.ilum.amenity.ui.home
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import butterknife.ButterKnife
 import com.google.android.gms.maps.GoogleMap
@@ -33,7 +38,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var isMapMoveable = false
     private var isMarker = false
 
-    private val items = arrayOf("Скамья", "Ограждение", "Фонарь", "Создать свой объект")
+    private val items = arrayOf("Скамья", "Ограждение", "Фонарь", "Дерево", "Клумба", "Паркинг", "Создать свой объект")
     private var item = 0
     private lateinit var polygon: Polygon
 
@@ -114,7 +119,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     val latitude = latLng.latitude
                     val longitude = latLng.longitude
                     isMarker = false
-                    if(PolyUtil.containsLocation(latLng, positions, true))
+                    if (PolyUtil.containsLocation(latLng, positions, true))
                         setMarker(LatLng(latitude, longitude))
                 }
 
@@ -123,20 +128,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+        return ContextCompat.getDrawable(context, vectorResId)?.run {
+            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+    }
+
     private fun setMarker(latLng: LatLng) {
-        googleMap.addMarker(
-            MarkerOptions().position(latLng)
-                .icon(
-                    BitmapDescriptorFactory.defaultMarker(
-                        when (item) {
-                            0 -> BitmapDescriptorFactory.HUE_RED
-                            1 -> BitmapDescriptorFactory.HUE_BLUE
-                            2 -> BitmapDescriptorFactory.HUE_YELLOW
-                            else -> BitmapDescriptorFactory.HUE_GREEN
-                        }
+        try {
+            googleMap.addMarker(
+                MarkerOptions().position(latLng)
+                    .icon(
+                        activity?.let { bitmapDescriptorFromVector(it,
+                        when(item){
+                            0 -> R.drawable.ic_bench
+                            1 -> R.drawable.ic_fence
+                            2 -> R.drawable.ic_streetlight
+                            3 -> R.drawable.ic_tree
+                            4 -> R.drawable.ic_flower
+                            5 -> R.drawable.ic_parking
+                            else -> R.drawable.ic_custom_marker
+                        }) }
                     )
-                )
-        )
+            )
+        }catch (e: Exception){
+            Log.d("Horde", e.message.toString())
+        }
+        if (item == 6)
+            createMarkerDescription()
+    }
+
+    private fun createMarkerDescription() {
+
     }
 
 //    private fun showBottomSheet() {
