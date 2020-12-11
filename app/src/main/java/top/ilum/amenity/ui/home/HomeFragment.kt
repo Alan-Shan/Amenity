@@ -2,6 +2,8 @@ package top.ilum.amenity.ui.home
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.DialogInterface
+import android.graphics.BitmapFactory
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -110,8 +112,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             item = which
         }.setPositiveButton("Ok") { _, _ -> }
         builder.create().show()
-
-        if (isMarker) {
             frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
                 if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                     val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
@@ -119,15 +119,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     val latitude = latLng.latitude
                     val longitude = latLng.longitude
                     isMarker = false
-                    if (PolyUtil.containsLocation(latLng, positions, true))
-                        setMarker(LatLng(latitude, longitude))
+                    if (PolyUtil.containsLocation(latLng, positions, true)) {
+                        val tempMarker: Marker = googleMap.addMarker(
+                            MarkerOptions().position(
+                                LatLng(
+                                    latitude,
+                                    longitude
+                                )
+                            ).icon(BitmapDescriptorFactory.defaultMarker())
+                        )
+                        askAndSend(latitude, longitude, tempMarker)
+                    }
                 }
 
                 return@OnTouchListener isMapMoveable
             })
-        }
     }
 
+    @SuppressLint("InflateParams")
+    private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker) {
+        val builder = AlertDialog.Builder(context).setTitle("Введите информацию об объекте:")
+        val inflater = requireActivity().layoutInflater
+
+        tempMarker.remove()
+        builder.setView(inflater.inflate(R.layout.marker_dialog, null)).setPositiveButton("ОК",
+            DialogInterface.OnClickListener { dialogInterface, i ->
+                setMarker(LatLng(latitude, longitude), "title")
+            }).setNegativeButton("Отмена",
+            DialogInterface.OnClickListener { dialogInterface, i ->
+                dialogInterface.cancel()
+            })
+        builder.create().show()
+
+    }
+
+  
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         return ContextCompat.getDrawable(context, vectorResId)?.run {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
@@ -137,17 +163,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun setMarker(latLng: LatLng) {
+    private fun setMarker(latLng: LatLng, title: String) {
         try {
             googleMap.addMarker(
-                MarkerOptions().position(latLng)
+                MarkerOptions().position(latLng).title(title)
                     .icon(
-                        activity?.let { bitmapDescriptorFromVector(it,
-                        when(item){
-                            0 -> R.drawable.ic_bench
-                            1 -> R.drawable.ic_fence
-                            2 -> R.drawable.ic_streetlight
-                            3 -> R.drawable.ic_tree
+                        activity?.let {
+                            bitmapDescriptorFromVector(
+                                it,
+                                when (item) {
+                                    0 -> R.drawable.ic_bench
+                                    1 -> R.drawable.ic_fence
+                                    2 -> R.drawable.ic_streetlight
+                                    3 -> R.drawable.ic_tree
                             4 -> R.drawable.ic_flower
                             5 -> R.drawable.ic_parking
                             else -> R.drawable.ic_custom_marker
@@ -202,6 +230,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0 as GoogleMap
+        // Create a LatLngBounds that includes Russia
+        val russia = LatLngBounds(
+            LatLng(51.077775, 31.681419),
+            LatLng(76.760435, 166.123767)
+        )
+        // Constrain the camera target to Russia.
+        googleMap.setLatLngBoundsForCameraTarget(russia)
     }
 
 }
