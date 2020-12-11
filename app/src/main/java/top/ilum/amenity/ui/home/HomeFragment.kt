@@ -163,17 +163,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun setMarker(latLng: LatLng) {
+    private fun setMarker(latLng: LatLng, title: String) {
         try {
             googleMap.addMarker(
-                MarkerOptions().position(latLng)
+                MarkerOptions().position(latLng).title(title)
                     .icon(
-                        activity?.let { bitmapDescriptorFromVector(it,
-                        when(item){
-                            0 -> R.drawable.ic_bench
-                            1 -> R.drawable.ic_fence
-                            2 -> R.drawable.ic_streetlight
-                            3 -> R.drawable.ic_tree
+                        activity?.let {
+                            bitmapDescriptorFromVector(
+                                it,
+                                when (item) {
+                                    0 -> R.drawable.ic_bench
+                                    1 -> R.drawable.ic_fence
+                                    2 -> R.drawable.ic_streetlight
+                                    3 -> R.drawable.ic_tree
                             4 -> R.drawable.ic_flower
                             5 -> R.drawable.ic_parking
                             else -> R.drawable.ic_custom_marker
