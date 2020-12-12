@@ -2,9 +2,8 @@ package top.ilum.amenity.ui.home
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.graphics.BitmapFactory
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -28,7 +27,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import top.ilum.amenity.R
 import kotlin.math.roundToInt
 
-
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private val positions: MutableList<LatLng> = ArrayList()
@@ -38,13 +36,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var destination = 1
 
     private var isMapMoveable = false
-    private var isMarker = false
 
-    private val items = arrayOf("Скамья", "Ограждение", "Фонарь", "Дерево", "Клумба", "Паркинг", "Создать свой объект")
-    private var item = 0
-    private lateinit var polygon: Polygon
-
-//    private val mBottomSheetBehavior: BottomSheetBehavior<*>? = null
+    private lateinit var customBottomSheetDialogFragment: CustomBottomSheetDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,7 +66,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             positions.removeAll(positions)
             googleMap.clear()
 
-            frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
+            frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Draw polygon
                 if (isMapMoveable) {
                     val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
                     val latLng = googleMap.projection.fromScreenLocation(point)
@@ -93,9 +86,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             destination = 1
                             btnCreatePolygon.visibility = View.VISIBLE
                             drawPolygon()
-                            isMarker = true
-                            showAlertDialog()
-//                        showBottomSheet()
+                            showBottomSheet()
                         }
                     }
                 }
@@ -105,36 +96,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun showAlertDialog() {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Выберите объект:").setSingleChoiceItems(items, -1) { _, which ->
-            item = which
-        }.setPositiveButton("Ok") { _, _ -> }
-        builder.create().show()
-            frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
-                if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                    val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
-                    val latLng = googleMap.projection.fromScreenLocation(point)
-                    val latitude = latLng.latitude
-                    val longitude = latLng.longitude
-                    isMarker = false
-                    if (PolyUtil.containsLocation(latLng, positions, true)) {
-                        val tempMarker: Marker = googleMap.addMarker(
-                            MarkerOptions().position(
-                                LatLng(
-                                    latitude,
-                                    longitude
-                                )
-                            ).icon(BitmapDescriptorFactory.defaultMarker())
-                        )
-                        askAndSend(latitude, longitude, tempMarker)
-                    }
-                }
-
-                return@OnTouchListener isMapMoveable
-            })
-    }
+//    @SuppressLint("ClickableViewAccessibility")
+//    private fun showAlertDialog() {
+//        val builder = AlertDialog.Builder(context)
+//        builder.setTitle("Выберите объект:").setSingleChoiceItems(items, -1) { _, which ->
+//            item = which
+//        }.setPositiveButton("Ok") { _, _ -> }
+//        builder.create().show()
+//
+//    }
 
     @SuppressLint("InflateParams")
     private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker) {
@@ -153,17 +123,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-  
-    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+
+    private fun bitmapDescriptorFromVector(
+        context: Context,
+        vectorResId: Int
+    ): BitmapDescriptor? {     // Method that allows to set icons for markers
         return ContextCompat.getDrawable(context, vectorResId)?.run {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val bitmap =
+                Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }
     }
 
-    private fun setMarker(latLng: LatLng, title: String) {
+    private fun setMarker(
+        latLng: LatLng,
+        title: String
+    ) {      // Method that allows to set different markers
         try {
             googleMap.addMarker(
                 MarkerOptions().position(latLng).title(title)
@@ -171,21 +148,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         activity?.let {
                             bitmapDescriptorFromVector(
                                 it,
-                                when (item) {
+                                when (customBottomSheetDialogFragment.getItem()) {
                                     0 -> R.drawable.ic_bench
                                     1 -> R.drawable.ic_fence
                                     2 -> R.drawable.ic_streetlight
                                     3 -> R.drawable.ic_tree
-                            4 -> R.drawable.ic_flower
-                            5 -> R.drawable.ic_parking
-                            else -> R.drawable.ic_custom_marker
-                        }) }
+                                    4 -> R.drawable.ic_flower
+                                    5 -> R.drawable.ic_parking
+                                    else -> R.drawable.ic_custom_marker
+                                }
+                            )
+                        }
                     )
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("Horde", e.message.toString())
         }
-        if (item == 6)
+        if (customBottomSheetDialogFragment.getItem() == 6)
             createMarkerDescription()
     }
 
@@ -193,14 +172,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-//    private fun showBottomSheet() {
-//        CustomBottomSheetDialogFragment().apply {
-//            if (isAdded)
-//                show(childFragmentManager, CustomBottomSheetDialogFragment.TAG)
-//        }
-//    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showBottomSheet() {
+        customBottomSheetDialogFragment = CustomBottomSheetDialogFragment()
+        customBottomSheetDialogFragment.show(
+            childFragmentManager,
+            customBottomSheetDialogFragment.tag
+        )
 
-    private fun drawPolygon() {
+        frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Set marker
+            if(customBottomSheetDialogFragment.getItem() == -1) {
+                showBottomSheet()
+            }
+            else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
+                val latLng = googleMap.projection.fromScreenLocation(point)
+                val latitude = latLng.latitude
+                val longitude = latLng.longitude
+                if (PolyUtil.containsLocation(latLng, positions, true)) {
+                    val tempMarker: Marker = googleMap.addMarker(
+                        MarkerOptions().position(
+                            LatLng(
+                                latitude,
+                                longitude
+                            )
+                        ).icon(BitmapDescriptorFactory.defaultMarker())
+                    )
+                    askAndSend(latitude, longitude, tempMarker)
+                }
+            }
+
+            return@OnTouchListener isMapMoveable
+        })
+    }
+
+    private fun drawPolygon() {     // Method that allows to draw polygons
         val polygonOptions = PolygonOptions()
         polygonOptions.addAll(positions)
         polygonOptions.strokeColor(Color.RED)
