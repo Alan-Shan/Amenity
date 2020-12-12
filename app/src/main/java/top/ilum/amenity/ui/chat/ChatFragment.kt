@@ -25,6 +25,7 @@ class ChatFragment : Fragment() {
     lateinit var chatSocket: Socket
     lateinit var errorSocket: Socket
     lateinit var chatAdapter: ChatAdapter
+    lateinit var chatRecycler: RecyclerView
     lateinit var sendMsgButton: Button
     lateinit var chatMsgText: EditText
     private val gson: Gson = Gson()
@@ -38,7 +39,7 @@ class ChatFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_chat, container, false)
 
-        val chatRecycler = root.findViewById<RecyclerView>(R.id.chat_recycler)
+        chatRecycler = root.findViewById<RecyclerView>(R.id.chat_recycler)
         chatAdapter = ChatAdapter(requireContext(), list)
         chatRecycler.adapter = chatAdapter
         val layoutManager = LinearLayoutManager(requireContext())
@@ -127,6 +128,7 @@ class ChatFragment : Fragment() {
         activity?.runOnUiThread {
             list.add(event)
             chatAdapter.notifyItemInserted(list.size)
+            chatRecycler.scrollToPosition(list.size - 1)
         }
     }
 
