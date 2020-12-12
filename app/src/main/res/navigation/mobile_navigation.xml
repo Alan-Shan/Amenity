@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="top.ilum.amenity.ui.gallery.GalleryFragment"
+        android:name="top.ilum.amenity.ui.chat.ChatFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="top.ilum.amenity.ui.slideshow.SlideshowFragment"
+        android:name="top.ilum.amenity.ui.settings.SettingsFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

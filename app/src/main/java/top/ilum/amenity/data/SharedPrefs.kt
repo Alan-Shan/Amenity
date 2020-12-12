@@ -38,9 +38,13 @@ object SharedPrefs {
         get() = Key.NAME.get()
         set(token) = Key.NAME.set(token)
 
+    var room: String?
+        get() = Key.ROOM.get()
+        set(token) = Key.ROOM.set(token)
+
 
     private enum class Key {
-        TOKEN, REFRESH, ID, USERNAME, EMAIL, NAME;
+        TOKEN, REFRESH, ID, USERNAME, EMAIL, NAME, ROOM;
 
 
         fun get(): String? =
