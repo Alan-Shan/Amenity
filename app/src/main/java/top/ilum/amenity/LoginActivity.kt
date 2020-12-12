@@ -2,6 +2,7 @@ package top.ilum.amenity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.Visibility
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -22,6 +24,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val animDrawable = login_layout.background as AnimationDrawable
+        animDrawable.setEnterFadeDuration(20)
+        animDrawable.setExitFadeDuration(1000)
+        animDrawable.start()
 
         val message = intent.getBooleanExtra(
             "networking",
