@@ -123,6 +123,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             DialogInterface.OnClickListener { dialogInterface, i ->
                 val titleElem = view.findViewById<EditText>(R.id.name)
                 val descElem = view.findViewById<EditText>(R.id.description).text
+                val type = customBottomSheetDialogFragment.getItem()
                 if (TextUtils.isEmpty(titleElem.text.toString())) {
                     dialogInterface.cancel()
                     Snackbar.make(requireView(), "Ошибка! Не задано название", Snackbar.LENGTH_LONG)
@@ -136,7 +137,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             longitude = longitude,
                             latitude = latitude,
                             territory = polygonID,
-                            user = SharedPrefs.id as String
+                            user = SharedPrefs.id as String,
+                            type = type
                         )
                     )
                     call.enqueue(object : retrofit2.Callback<APIResult> {
@@ -326,6 +328,33 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         // Constrain the camera target to Russia.
         googleMap.setLatLngBoundsForCameraTarget(russia)
 
+        call.enqueue(object : retrofit2.Callback<List<top.ilum.amenity.data.Marker>> {
+            override fun onResponse(
+                call: Call<List<top.ilum.amenity.data.Marker>>,
+                response: Response<List<top.ilum.amenity.data.Marker>>
+            ) {
+                if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
+                    for (marker in response.body()!!) {
+                        googleMap.addMarker(
+                            MarkerOptions().position(
+                                LatLng(
+                                    marker.latitude,
+                                    marker.longitude
+                                )
+                            ).title(marker.name)
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<top.ilum.amenity.data.Marker>>, t: Throwable) {
+                Snackbar.make(
+                    requireView(),
+                    "Что-то пошло не так.",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        })
 
     }
 

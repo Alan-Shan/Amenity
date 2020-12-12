@@ -7,6 +7,7 @@ data class Marker(
     val user: String,
     val longitude: Double,
     val latitude: Double,
-    val territory: String
+    val territory: String,
+    val type: Int
 
 )
