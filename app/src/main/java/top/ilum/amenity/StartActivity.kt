@@ -17,7 +17,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         fun pushLogin(net: Boolean = false) {
-            startActivity(Intent(this, LoginActivity::class.java).putExtra("networking", net))
+            startActivity(Intent(this, LoginActivity::class.java).putExtra(getString(R.string.networking), net))
             this.finish()
         }
 

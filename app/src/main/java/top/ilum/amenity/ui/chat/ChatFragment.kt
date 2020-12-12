@@ -49,15 +49,15 @@ class ChatFragment : Fragment() {
         chatMsgText = root.findViewById(R.id.chat_input)
         if (room == null) {
             sendMsgButton.isEnabled = false
-            updateData(Event(1, "Пожалуйста, выберите ваш дом в настройках"))
+            updateData(Event(1, getString(R.string.please_select_your_home)))
         }
 
         sendMsgButton.setOnClickListener {
             if (TextUtils.isEmpty(chatMsgText.text.toString())) {
-                chatMsgText.setError("Введите сообщение!")
+                chatMsgText.error = getString(R.string.write_a_message)
             } else {
                 chatSocket.emit(
-                    "text",
+                    getString(R.string.text),
                     gson.toJson(room?.let { it1 ->
                         SocketData(
                             it1,
@@ -78,9 +78,9 @@ class ChatFragment : Fragment() {
 
 
         try {
-            val manager = Manager(URI("http://10.0.2.2:5000"))
-            chatSocket = manager.socket("/chat")
-            errorSocket = manager.socket("/errors")
+            val manager = Manager(URI(getString(R.string.uri)))
+            chatSocket = manager.socket(getString(R.string.chat_socket))
+            errorSocket = manager.socket(getString(R.string.error_socket))
         } catch (e: Exception) {
         }
 
@@ -90,11 +90,11 @@ class ChatFragment : Fragment() {
          */
         chatSocket.connect() // Chat
         chatSocket.on(Socket.EVENT_CONNECT, onConnect)
-        chatSocket.on("status", status)
-        chatSocket.on("message", message)
+        chatSocket.on(getString(R.string.status), status)
+        chatSocket.on(getString(R.string.message), message)
 
         errorSocket.connect() // Errors
-        errorSocket.on("error", handleError)
+        errorSocket.on(getString(R.string.error), handleError)
 
 
     }
@@ -116,7 +116,7 @@ class ChatFragment : Fragment() {
     }
 
     private var onConnect = Emitter.Listener { //Sent on connection
-        chatSocket.emit("joined", gson.toJson(room?.let { it1 -> SocketData(it1, token) }))
+        chatSocket.emit(getString(R.string.joined), gson.toJson(room?.let { it1 -> SocketData(it1, token) }))
 
     }
 
@@ -137,6 +137,6 @@ class ChatFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        chatSocket.emit("left", gson.toJson((room?.let { SocketData(it, token) })))
+        chatSocket.emit(getString(R.string.left), gson.toJson((room?.let { SocketData(it, token) })))
     }
 }

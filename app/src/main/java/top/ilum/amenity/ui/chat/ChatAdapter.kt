@@ -41,9 +41,9 @@ class ChatAdapter(val context: Context, private val messages: ArrayList<Event>) 
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val statusMsg = itemView.findViewById<TextView>(R.id.status_msg)
-        val msgName = itemView.findViewById<TextView>(R.id.chat_name)
-        val msgContent = itemView.findViewById<TextView>(R.id.chat_msg)
+        val statusMsg: TextView = itemView.findViewById(R.id.status_msg)
+        val msgName: TextView = itemView.findViewById(R.id.chat_name)
+        val msgContent: TextView = itemView.findViewById(R.id.chat_msg)
     }
 
 }

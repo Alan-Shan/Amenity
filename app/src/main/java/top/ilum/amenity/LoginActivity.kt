@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         animDrawable.start()
 
         val message = intent.getBooleanExtra(
-            "networking",
+            getString(R.string.networking),
             false
         ) //Check if no network message was passed and notify a user
         if (message) {
@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
                 val client = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build()
                 val request = Request.Builder()
                     .url("$baseURL/auth")
-                    .addHeader("Authorization", auth)
+                    .addHeader(getString(R.string.auth), auth)
                     .build()
 
                 fun proceed(case: Int) {

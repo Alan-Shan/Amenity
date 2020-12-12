@@ -7,13 +7,13 @@
 
     <TextView
         android:id="@+id/info"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:textColor="@color/colorPrimaryDark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Выберите объект:"
+        android:gravity="center"
+        android:text="@string/choose_an_object"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/size18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,10 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="50dp"
-        android:drawableTop="@drawable/ic_bench"
         android:gravity="center"
-        android:text="Скамья"
+        android:text="@string/bench"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_bench"
         app:layout_constraintBottom_toBottomOf="@+id/txt_fence"
         app:layout_constraintEnd_toStartOf="@+id/txt_fence"
         app:layout_constraintStart_toStartOf="parent" />
@@ -37,10 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:drawableTop="@drawable/ic_fence"
         android:gravity="center"
-        android:text="Ограда"
+        android:text="@string/fence"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_fence"
         app:layout_constraintBottom_toBottomOf="@+id/txt_streetlight"
         app:layout_constraintEnd_toStartOf="@+id/txt_streetlight" />
 
@@ -49,10 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="51dp"
-        android:drawableTop="@drawable/ic_streetlight"
         android:gravity="center"
-        android:text="Фонарь"
+        android:text="@string/streetlight"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_streetlight"
         app:layout_constraintBottom_toBottomOf="@+id/txt_tree"
         app:layout_constraintEnd_toStartOf="@+id/txt_tree" />
 
@@ -62,10 +62,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:drawableTop="@drawable/ic_tree"
         android:gravity="center"
-        android:text="Дерево"
+        android:text="@string/tree"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_tree"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/info" />
 
@@ -74,10 +74,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        android:drawableTop="@drawable/ic_flower"
         android:gravity="center"
-        android:text="Клумба"
+        android:text="@string/flowers"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_flower"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txt_parking" />
 
@@ -85,10 +85,10 @@
         android:id="@+id/txt_parking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_parking"
         android:gravity="center"
-        android:text="Паркинг"
+        android:text="@string/parking"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_parking"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txt_flower"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,10 +101,10 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:drawableTop="@drawable/ic_custom_marker"
         android:gravity="center"
-        android:text="Создать\nсвой объект"
+        android:text="@string/your_object"
         android:textColor="@android:color/black"
+        app:drawableTopCompat="@drawable/ic_custom_marker"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txt_parking"
         app:layout_constraintTop_toBottomOf="@+id/txt_streetlight" />

@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -33,10 +32,8 @@ import retrofit2.Response
 import top.ilum.amenity.R
 import top.ilum.amenity.data.APIResult
 import top.ilum.amenity.data.Territory
-import top.ilum.amenity.data.User
 import top.ilum.amenity.utils.Builder
 import top.ilum.amenity.utils.Endpoints
-import javax.security.auth.callback.Callback
 import kotlin.math.roundToInt
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -114,20 +111,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     @SuppressLint("InflateParams")
     private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker? = null) {
-        val builder = AlertDialog.Builder(context).setTitle("Введите информацию об объекте:")
+        val builder = AlertDialog.Builder(context).setTitle(getString(R.string.enter_object_information))
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.marker_dialog, null)
         tempMarker?.remove()
         builder.setView(view).setPositiveButton(
-            "ОК",
+            getString(R.string.ok),
             DialogInterface.OnClickListener { dialogInterface, i ->
                 val titleElem = view.findViewById<EditText>(R.id.name)
                 val descElem = view.findViewById<EditText>(R.id.description).text
                 val type = customBottomSheetDialogFragment.getItem()
                 if (TextUtils.isEmpty(titleElem.text.toString())) {
                     dialogInterface.cancel()
-                    Snackbar.make(requireView(), "Ошибка! Не задано название", Snackbar.LENGTH_LONG)
-                        .setAction("Повторить") { askAndSend(latitude, longitude) }
+                    Snackbar.make(requireView(), getString(R.string.error_no_name), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.repeat)) { askAndSend(latitude, longitude) }
                         .show()
                 } else {
                     val call = request.postMarker(
@@ -149,7 +146,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             if (response.isSuccessful) {
                                 Snackbar.make(
                                     requireView(),
-                                    "Маркер добавлен!",
+                                    getString(R.string.marker_is_added),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
@@ -158,7 +155,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         override fun onFailure(call: Call<APIResult>, t: Throwable) {
                             Snackbar.make(
                                 requireView(),
-                                "Что-то пошло не так.",
+                                getString(R.string.something_went_wrong),
                                 Snackbar.LENGTH_LONG
                             ).show()
                         }
@@ -168,7 +165,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
                 }
-            }).setNegativeButton("Отмена",
+            }).setNegativeButton(getString(R.string.cancel),
             DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.cancel()
             })
@@ -221,7 +218,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun addOneMoreMarker() {    //Set more markers
-        btnCreatePolygon.text = "Добавить ещё один объект"
+        btnCreatePolygon.text = getString(R.string.add_object)
         btnCreatePolygon.setOnClickListener {
             isMarker = true
             showBottomSheet()
@@ -237,10 +234,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         )
 
         frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Set marker
-            if(customBottomSheetDialogFragment.getItem() == -1) {
+            if (customBottomSheetDialogFragment.getItem() == -1) {
                 showBottomSheet()
-            }
-            else if (motionEvent.action == MotionEvent.ACTION_DOWN && isMarker) {
+            } else if (motionEvent.action == MotionEvent.ACTION_DOWN && isMarker) {
                 val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
                 val latLng = googleMap.projection.fromScreenLocation(point)
                 val latitude = latLng.latitude
@@ -268,7 +264,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val latitude: MutableList<Double> = arrayListOf()
         val call = request.postTerritory(
             Territory(
-                name = "Territory",
+                name = getString(R.string.territory),
                 longitude = longitude,
                 latitude = latitude,
                 user = SharedPrefs.id as String
@@ -283,7 +279,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onFailure(call: Call<APIResult>, t: Throwable) {
-                Snackbar.make(requireView(), "Что-то пошло не так.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
             }
         })
 
@@ -365,7 +361,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             override fun onFailure(call: Call<List<top.ilum.amenity.data.Marker>>, t: Throwable) {
                 Snackbar.make(
                     requireView(),
-                    "Что-то пошло не так.",
+                    getString(R.string.something_went_wrong),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

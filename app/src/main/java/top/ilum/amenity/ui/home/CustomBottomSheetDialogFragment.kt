@@ -15,7 +15,7 @@ import top.ilum.amenity.R
 
 class CustomBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
-    companion object{
+    companion object {
         var item = -1
     }
 
@@ -31,6 +31,7 @@ class CustomBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 dismiss()
             }
         }
+
         override fun onSlide(bottomSheet: View, slideOffset: Float) {}
     }
 
@@ -49,31 +50,31 @@ class CustomBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        txt_bench.setOnClickListener{
+        txt_bench.setOnClickListener {
             item = 0
             dismiss()
         }
-        txt_fence.setOnClickListener{
+        txt_fence.setOnClickListener {
             item = 1
             dismiss()
         }
-        txt_streetlight.setOnClickListener{
+        txt_streetlight.setOnClickListener {
             item = 2
             dismiss()
         }
-        txt_tree.setOnClickListener{
+        txt_tree.setOnClickListener {
             item = 3
             dismiss()
         }
-        txt_flower.setOnClickListener{
+        txt_flower.setOnClickListener {
             item = 4
             dismiss()
         }
-        txt_parking.setOnClickListener{
+        txt_parking.setOnClickListener {
             item = 5
             dismiss()
         }
-        txt_custom.setOnClickListener{
+        txt_custom.setOnClickListener {
             item = 6
             dismiss()
         }
