@@ -9,5 +9,5 @@ data class Register(
 
 data class APIResult(
     val status: String,
-    val optionalID: String? = null
+    val id: String? = null
 )

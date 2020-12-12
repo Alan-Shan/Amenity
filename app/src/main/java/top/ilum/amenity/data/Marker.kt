@@ -4,9 +4,9 @@ data class Marker(
     val id: String? = null,
     val name: String,
     val description: String,
-    val user: User,
-    val longitude: Float,
-    val latitude: Float,
-    val territory: Territory
+    val user: String,
+    val longitude: Double,
+    val latitude: Double,
+    val territory: String
 
 )

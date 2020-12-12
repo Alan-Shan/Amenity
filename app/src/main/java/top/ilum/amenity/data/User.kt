@@ -6,6 +6,6 @@ data class User(
     val username: String,
     val role: Boolean,
     val email: String,
-    val markers: List<Marker>,
-    val territory: List<Territory>
+    val markers: List<String>,
+    val territory: List<String>
 )

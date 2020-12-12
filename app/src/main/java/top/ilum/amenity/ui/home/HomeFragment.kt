@@ -1,5 +1,6 @@
 package top.ilum.amenity.ui.home
 
+import SharedPrefs
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
@@ -27,9 +28,15 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.fragment_home.*
+import retrofit2.Call
+import retrofit2.Response
 import top.ilum.amenity.R
+import top.ilum.amenity.data.APIResult
+import top.ilum.amenity.data.Territory
+import top.ilum.amenity.data.User
 import top.ilum.amenity.utils.Builder
 import top.ilum.amenity.utils.Endpoints
+import javax.security.auth.callback.Callback
 import kotlin.math.roundToInt
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -38,6 +45,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     lateinit var mapView: MapView
     lateinit var googleMap: GoogleMap
     private var source = 0
+    lateinit var polygonID: String
     private var destination = 1
 
     private var isMapMoveable = false
@@ -129,7 +137,42 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         .setAction("Повторить") { askAndSend(latitude, longitude) }
                         .show()
                 } else {
+                    val call = request.postMarker(
+                        top.ilum.amenity.data.Marker(
+                            name = titleElem.text.toString(),
+                            description = descElem.toString(),
+                            longitude = longitude,
+                            latitude = latitude,
+                            territory = polygonID,
+                            user = SharedPrefs.id as String
+                        )
+                    )
+                    call.enqueue(object : retrofit2.Callback<APIResult> {
+                        override fun onResponse(
+                            call: Call<APIResult>,
+                            response: Response<APIResult>
+                        ) {
+                            if (response.isSuccessful) {
+                                Snackbar.make(
+                                    requireView(),
+                                    "Маркер добавлен!",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<APIResult>, t: Throwable) {
+                            Snackbar.make(
+                                requireView(),
+                                "Что-то пошло не так.",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    })
+
                     setMarker(LatLng(latitude, longitude), titleElem.text.toString())
+
+
                 }
             }).setNegativeButton("Отмена",
             DialogInterface.OnClickListener { dialogInterface, i ->
@@ -224,6 +267,33 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private fun drawPolygon() {     // Method that allows to draw polygons
         val polygonOptions = PolygonOptions()
+        val longitude: MutableList<Double> = arrayListOf()
+        val latitude: MutableList<Double> = arrayListOf()
+        val call = request.postTerritory(
+            Territory(
+                name = "Territory",
+                longitude = longitude,
+                latitude = latitude,
+                user = SharedPrefs.id as String
+            )
+        )
+        call.enqueue(object : retrofit2.Callback<APIResult> {
+            override fun onResponse(call: Call<APIResult>, response: Response<APIResult>) {
+                if (response.isSuccessful) {
+                    val result = response.body() as APIResult
+                    polygonID = result.id as String
+                }
+            }
+
+            override fun onFailure(call: Call<APIResult>, t: Throwable) {
+                Snackbar.make(requireView(), "Что-то пошло не так.", Snackbar.LENGTH_LONG).show()
+            }
+        })
+
+        for (position in positions) {
+            latitude.add(position.latitude)
+            longitude.add(position.longitude)
+        }
         polygonOptions.addAll(positions)
         polygonOptions.strokeColor(Color.RED)
             .fillColor(resources.getColor(R.color.polygonColor))
@@ -251,6 +321,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap?) {
+        val call = request.getMarkers()
         googleMap = p0 as GoogleMap
         // Create a LatLngBounds that includes Russia
         val russia = LatLngBounds(
@@ -259,6 +330,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         )
         // Constrain the camera target to Russia.
         googleMap.setLatLngBoundsForCameraTarget(russia)
+
+
     }
 
 }

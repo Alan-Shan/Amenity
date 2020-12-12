@@ -1,17 +1,17 @@
 package top.ilum.amenity.data
 
 data class Territory(
-    val id: String,
+    val id: String? = null,
     val name: String,
-    val description: String,
-    val user: User,
+    val description: String? = null,
+    val user: String,
     val coordinates: Coordinates? = null,
-    val longitude: List<Float>? = null,
-    val latitude: List<Float>? = null
+    val longitude: List<Double>? = null,
+    val latitude: List<Double>? = null
 
 )
 
 data class Coordinates(
-    val longitude: Float,
-    val latitude: Float
+    val longitude: Double,
+    val latitude: Double
 )

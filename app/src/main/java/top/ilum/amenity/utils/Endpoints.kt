@@ -11,8 +11,8 @@ interface Endpoints {
         private const val REGISTER = "/register"
         private const val TERRITORIES = "/api/territories"
         private const val TERRITORY = "/api/territories/{id}"
-        private const val MARKERS = "/api/territories"
-        private const val MARKER = "/api/territories/{id}"
+        private const val MARKERS = "/api/markers"
+        private const val MARKER = "/api/markers/{id}"
 
 
     }
@@ -42,4 +42,8 @@ interface Endpoints {
 
     @GET(MARKER)
     fun getMarker(@Path("id") id: String): Call<Marker>
+
+    @Headers("Content-Type: application/json")
+    @POST(MARKERS)
+    fun postMarker(@Body data: Marker): Call<APIResult>
 }
