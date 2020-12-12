@@ -39,6 +39,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     lateinit var googleMap: GoogleMap
     private var source = 0
     private var destination = 1
+    private var isMarker = false
 
     private var isMapMoveable = false
     private lateinit var request: Endpoints
@@ -92,6 +93,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             destination = 1
                             btnCreatePolygon.visibility = View.VISIBLE
                             drawPolygon()
+                            isMarker = true
                             showBottomSheet()
                         }
                     }
@@ -101,16 +103,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             })
         }
     }
-
-//    @SuppressLint("ClickableViewAccessibility")
-//    private fun showAlertDialog() {
-//        val builder = AlertDialog.Builder(context)
-//        builder.setTitle("Выберите объект:").setSingleChoiceItems(items, -1) { _, which ->
-//            item = which
-//        }.setPositiveButton("Ok") { _, _ -> }
-//        builder.create().show()
-//
-//    }
 
     @SuppressLint("InflateParams")
     private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker? = null) {
@@ -178,18 +170,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     )
             )
         } catch (e: Exception) {
-            Log.d("Horde", e.message.toString())
+
         }
-        if (customBottomSheetDialogFragment.getItem() == 6)
-            createMarkerDescription()
+        addOneMoreMarker()
     }
 
-    private fun createMarkerDescription() {
-
+    private fun addOneMoreMarker() {    //Set more markers
+        btnCreatePolygon.text = "Добавить ещё один объект"
+        btnCreatePolygon.setOnClickListener {
+            isMarker = true
+            showBottomSheet()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun showBottomSheet() {
+    private fun showBottomSheet() {     // Object selection
         customBottomSheetDialogFragment = CustomBottomSheetDialogFragment()
         customBottomSheetDialogFragment.show(
             childFragmentManager,
@@ -200,7 +195,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             if(customBottomSheetDialogFragment.getItem() == -1) {
                 showBottomSheet()
             }
-            else if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+            else if (motionEvent.action == MotionEvent.ACTION_DOWN && isMarker) {
                 val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
                 val latLng = googleMap.projection.fromScreenLocation(point)
                 val latitude = latLng.latitude
@@ -217,7 +212,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     askAndSend(latitude, longitude, tempMarker)
                 }
             }
-
+            isMarker = false
             return@OnTouchListener isMapMoveable
         })
     }
