@@ -104,6 +104,8 @@ class ChatFragment : Fragment() {
      */
     private val token: String = SharedPrefs.token as String
 
+    private val rs: String = SharedPrefs.room as String
+
     private val status = Emitter.Listener {
         val msg = gson.fromJson(it[0].toString(), Message::class.java)
         updateData(Event(1, msg.msg))
@@ -116,12 +118,12 @@ class ChatFragment : Fragment() {
     }
 
     private var onConnect = Emitter.Listener { //Sent on connection
-        chatSocket.emit(getString(R.string.joined), gson.toJson(room?.let { it1 -> SocketData(it1, token) }))
+        chatSocket.emit(getString(R.string.joined), gson.toJson(SocketData(rs, token)))
 
     }
 
     private var handleError = Emitter.Listener {
-        //TODO token refresh
+
     }
 
     private fun updateData(event: Event) {
