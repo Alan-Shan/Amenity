@@ -1,9 +1,12 @@
 package top.ilum.amenity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
@@ -26,17 +29,29 @@ class SignUpActivity : AppCompatActivity() {
         animDrawable.setEnterFadeDuration(20)
         animDrawable.setExitFadeDuration(1000)
         animDrawable.start()
+        val name = findViewById<EditText>(R.id.txt_name).text
+        val email = findViewById<EditText>(R.id.txt_email).text
+        val password = findViewById<EditText>(R.id.txt_password).text
+        val username = findViewById<EditText>(R.id.txt_username).text
+        fun checker(): Boolean {
+            return name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()
+        }
+
         findViewById<Button>(R.id.btn_create_account).setOnClickListener {
-            val name = findViewById<EditText>(R.id.txt_name).text.toString()
-            val email = findViewById<EditText>(R.id.txt_email).text.toString()
-            val password = findViewById<EditText>(R.id.txt_password).text.toString()
-            val username = findViewById<EditText>(R.id.txt_username).text.toString()
+            if (!checker()) {
+                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                if (keyboard.isAcceptingText) {
+                    keyboard.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                }
+                Snackbar.make(it, "Заполните все поля", Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val call = request.register(
                 data = Register(
-                    username = username,
-                    name = name,
-                    email = email,
-                    password = password
+                    username = username.toString(),
+                    name = name.toString(),
+                    email = email.toString(),
+                    password = password.toString()
                 )
             )
 

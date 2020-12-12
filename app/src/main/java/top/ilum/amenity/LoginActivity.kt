@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
@@ -109,16 +110,21 @@ class LoginActivity : AppCompatActivity() {
                             if (!response.isSuccessful && response.code == 401) {
                                 proceed(0)
                             } else {
-                                val tokenBody = response.body!!.string().toString()
-                                val tokenJson = JSONObject(tokenBody)
-                                val token = tokenJson.getString("token")
-                                SharedPrefs.refreshToken = tokenJson.getString("refresh_token")
-                                SharedPrefs.token = token
-                                SharedPrefs.id = tokenJson.getString("id")
-                                SharedPrefs.name = tokenJson.getString("name")
-                                SharedPrefs.username = tokenJson.getString("username")
-                                SharedPrefs.email = tokenJson.getString("email")
-                                proceed(1)
+                                try {
+
+                                    val tokenBody = response.body!!.string().toString()
+                                    val tokenJson = JSONObject(tokenBody)
+                                    val token = tokenJson.getString("token")
+                                    SharedPrefs.refreshToken = tokenJson.getString("refresh_token")
+                                    SharedPrefs.token = token
+                                    SharedPrefs.id = tokenJson.getString("id")
+                                    SharedPrefs.name = tokenJson.getString("name")
+                                    SharedPrefs.username = tokenJson.getString("username")
+                                    SharedPrefs.email = tokenJson.getString("email")
+                                    proceed(1)
+                                } catch (e: Exception) {
+                                    proceed(0)
+                                }
                             }
                         }
                     }
