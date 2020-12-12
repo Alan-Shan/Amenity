@@ -28,6 +28,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 import top.ilum.amenity.R
+import top.ilum.amenity.utils.Builder
+import top.ilum.amenity.utils.Endpoints
 import kotlin.math.roundToInt
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -39,7 +41,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var destination = 1
 
     private var isMapMoveable = false
-
+    private lateinit var request: Endpoints
     private lateinit var customBottomSheetDialogFragment: CustomBottomSheetDialogFragment
 
     override fun onCreateView(
@@ -56,6 +58,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        request = Builder.buildService(Endpoints::class.java, requireContext())
         mapView.getMapAsync(this)
         return v
     }
