@@ -40,14 +40,20 @@ class LoginActivity : AppCompatActivity() {
                 getString(R.string.unavailable),
                 Snackbar.LENGTH_LONG
             ).show()
-            findViewById<ImageView>(R.id.no_network_image).visibility = View.VISIBLE
-            findViewById<TextView>(R.id.no_network_message).visibility = View.VISIBLE
+            no_network_image.visibility = View.VISIBLE
+            no_network_message.visibility = View.VISIBLE
+            materialButton.visibility = View.INVISIBLE
         }
 
         val loginButton = findViewById<Button>(R.id.login)
         val username = findViewById<EditText>(R.id.nav_username)
         val password = findViewById<EditText>(R.id.password)
         val baseURL = getString(R.string.base_url)
+
+        materialButton.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
 
         fun validate(): Boolean {
             return username.text.toString() != "" && password.text.toString() != ""

@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         btnCreatePolygon.text = resources.getText(R.string.txt_choose_fragment)
-        btnCreatePolygon.setOnClickListener {
+//        btnCreatePolygon.setOnClickListener {
 //            val fragment: HomeFragment = supportFragmentManager.findFragmentByTag("Home") as HomeFragment
 //            isMapMoveable = true
 //            btnCreatePolygon.visibility = View.GONE
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 //
 //                return@OnTouchListener isMapMoveable
 //            })
-        }
+//        }
         return super.onOptionsItemSelected(item)
     }
 

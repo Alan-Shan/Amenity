@@ -5,7 +5,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-      <string name="menu_home">Map</string>
+    <string name="menu_home">Map</string>
     <string name="menu_gallery">Chats</string>
     <string name="menu_slideshow">Settings</string>
     <string name="action_settings">Settings</string>
@@ -49,4 +49,9 @@
     <string name="flowers">Клумба</string>
     <string name="parking">Паркинг</string>
     <string name="your_object">Создать\n свой объект</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
