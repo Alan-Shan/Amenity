@@ -9,11 +9,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import butterknife.ButterKnife
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 import top.ilum.amenity.R
@@ -107,14 +110,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 //    }
 
     @SuppressLint("InflateParams")
-    private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker) {
+    private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker? = null) {
         val builder = AlertDialog.Builder(context).setTitle("Введите информацию об объекте:")
         val inflater = requireActivity().layoutInflater
-
-        tempMarker.remove()
-        builder.setView(inflater.inflate(R.layout.marker_dialog, null)).setPositiveButton("ОК",
+        val view = inflater.inflate(R.layout.marker_dialog, null)
+        tempMarker?.remove()
+        builder.setView(view).setPositiveButton(
+            "ОК",
             DialogInterface.OnClickListener { dialogInterface, i ->
-                setMarker(LatLng(latitude, longitude), "title")
+                val titleElem = view.findViewById<EditText>(R.id.name)
+                val descElem = view.findViewById<EditText>(R.id.description).text
+                if (TextUtils.isEmpty(titleElem.text.toString())) {
+                    dialogInterface.cancel()
+                    Snackbar.make(requireView(), "Ошибка! Не задано название", Snackbar.LENGTH_LONG)
+                        .setAction("Повторить") { askAndSend(latitude, longitude) }
+                        .show()
+                } else {
+                    setMarker(LatLng(latitude, longitude), titleElem.text.toString())
+                }
             }).setNegativeButton("Отмена",
             DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.cancel()
