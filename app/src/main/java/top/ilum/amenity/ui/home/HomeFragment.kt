@@ -341,7 +341,22 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                                     marker.latitude,
                                     marker.longitude
                                 )
-                            ).title(marker.name)
+                            ).title(marker.name).icon(
+                                activity?.let {
+                                    bitmapDescriptorFromVector(
+                                        it,
+                                        when (marker.type) {
+                                            0 -> R.drawable.ic_bench
+                                            1 -> R.drawable.ic_fence
+                                            2 -> R.drawable.ic_streetlight
+                                            3 -> R.drawable.ic_tree
+                                            4 -> R.drawable.ic_flower
+                                            5 -> R.drawable.ic_parking
+                                            else -> R.drawable.ic_custom_marker
+                                        }
+                                    )
+                                }
+                            )
                         )
                     }
                 }
