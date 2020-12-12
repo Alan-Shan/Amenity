@@ -1,0 +1,35 @@
+<resources>
+    <string name="menu_home">Карта</string>
+    <string name="menu_gallery">Сообщения</string>
+    <string name="menu_slideshow">Настройки</string>
+    <string name="action_sign_in">Вход</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="fill_auth">Пожалуйста, введите логин и пароль.</string>
+    <string name="access_denied">Пожалуйста, проверьте данные авторизации.</string>
+    <string name="unavailable">К сожалению, сервис в настоящий момент недоступен.</string>
+    <string name="txt_choose_fragment">Выбрать фрагмент</string>
+    <string name="connection_error">Ошибка подключения</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="please_select_your_home">Пожалуйста, выберите ваш дом в настройках</string>
+    <string name="write_a_message">Введите сообщение!</string>
+    <string name="enter_object_information">Введите информацию об объекте:</string>
+    <string name="ok">Ок</string>
+    <string name="error_no_name">Ошибка! Не задано название</string>
+    <string name="repeat">Повторить</string>
+    <string name="marker_is_added">Маркер добавлен!</string>
+    <string name="something_went_wrong">Что-то пошло не так.</string>
+    <string name="add_object">Добавить ещё один объект</string>
+    <string name="choose_an_object">Выберите объект:</string>
+    <string name="bench">Скамья</string>
+    <string name="fence">Ограда</string>
+    <string name="streetlight">Фонарь</string>
+    <string name="tree">Дерево</string>
+    <string name="flowers">Клумба</string>
+    <string name="parking">Паркинг</string>
+    <string name="your_object">Создать\n свой объект</string>
+    <string name="create_an_account">Создать аккаунт</string>
+    <string name="name">Имя</string>
+    <string name="username">Логин</string>
+    <string name="password">Пароль</string>
+</resources>

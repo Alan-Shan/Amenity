@@ -73,45 +73,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         btnCreatePolygon.text = getString(R.string.txt_choose_fragment)
         btnCreatePolygon.setOnClickListener {
-            isMapMoveable = true
-            btnCreatePolygon.visibility = View.GONE
-            positions.removeAll(positions)
-            googleMap.clear()
 
-            frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Draw polygon
-                if (isMapMoveable) {
-                    val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
-                    val latLng = googleMap.projection.fromScreenLocation(point)
-                    val latitude = latLng.latitude
-                    val longitude = latLng.longitude
-
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            positions.add(LatLng(latitude, longitude))
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            positions.add(LatLng(latitude, longitude))
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            isMapMoveable = false
-                            source = 0
-                            destination = 1
-                            btnCreatePolygon.visibility = View.VISIBLE
-                            drawPolygon()
-                            isMarker = true
-                            showBottomSheet()
-                        }
-                    }
-                }
-
-                return@OnTouchListener isMapMoveable
-            })
         }
     }
 
     @SuppressLint("InflateParams")
     private fun askAndSend(latitude: Double, longitude: Double, tempMarker: Marker? = null) {
-        val builder = AlertDialog.Builder(context).setTitle(getString(R.string.enter_object_information))
+        val builder =
+            AlertDialog.Builder(context).setTitle(getString(R.string.enter_object_information))
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.marker_dialog, null)
         tempMarker?.remove()
@@ -123,7 +92,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 val type = customBottomSheetDialogFragment.getItem()
                 if (TextUtils.isEmpty(titleElem.text.toString())) {
                     dialogInterface.cancel()
-                    Snackbar.make(requireView(), getString(R.string.error_no_name), Snackbar.LENGTH_LONG)
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.error_no_name),
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction(getString(R.string.repeat)) { askAndSend(latitude, longitude) }
                         .show()
                 } else {
@@ -219,10 +192,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private fun addOneMoreMarker() {    //Set more markers
         btnCreatePolygon.text = getString(R.string.add_object)
-        btnCreatePolygon.setOnClickListener {
-            isMarker = true
-            showBottomSheet()
-        }
+        isMarker = true
+        onResume()
+//        btnCreatePolygon.setOnClickListener {
+//            isMarker = true
+//            showBottomSheet()
+//        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -279,7 +254,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onFailure(call: Call<APIResult>, t: Throwable) {
-                Snackbar.make(requireView(), getString(R.string.something_went_wrong), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.something_went_wrong),
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         })
 
@@ -293,9 +272,52 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         googleMap.addPolygon(polygonOptions)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        if (isMarker) {
+            btnCreatePolygon.setOnClickListener {
+                showBottomSheet()
+                isMarker = true
+            }
+        } else {
+            isMarker = true
+            btnCreatePolygon.setOnClickListener {
+                isMapMoveable = true
+                btnCreatePolygon.visibility = View.GONE
+                positions.removeAll(positions)
+
+                frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Draw polygon
+                    if (isMapMoveable) {
+                        val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
+                        val latLng = googleMap.projection.fromScreenLocation(point)
+                        val latitude = latLng.latitude
+                        val longitude = latLng.longitude
+
+                        when (motionEvent.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                positions.add(LatLng(latitude, longitude))
+                            }
+                            MotionEvent.ACTION_MOVE -> {
+                                positions.add(LatLng(latitude, longitude))
+                            }
+                            MotionEvent.ACTION_UP -> {
+                                isMapMoveable = false
+                                source = 0
+                                destination = 1
+                                btnCreatePolygon.visibility = View.VISIBLE
+                                drawPolygon()
+                                isMarker = true
+                                showBottomSheet()
+                            }
+                        }
+                    }
+
+                    return@OnTouchListener isMapMoveable
+                })
+            }
+        }
     }
 
     override fun onPause() {
