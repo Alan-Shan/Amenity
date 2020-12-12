@@ -1,27 +1,27 @@
 <resources>
-    <string name="app_name">Amenity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="app_name" translatable="false">Amenity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="menu_home">Map</string>
     <string name="menu_gallery">Chats</string>
     <string name="menu_slideshow">Settings</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings" translatable="false">Settings</string>
     <string name="prompt_email" translatable="false">E-mail</string>
-    <string name="action_sign_in">Вход</string>
-    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="prompt_password">Password</string>
     <string name="base_url" translatable="false">http://95.216.218.198</string>
-    <string name="fill_auth">Пожалуйста, введите логин и пароль.</string>
-    <string name="access_denied">Пожалуйста, проверьте данные авторизации.</string>
-    <string name="unavailable">К сожалению, сервис в настоящий момент недоступен.</string>
-    <string name="txt_choose_fragment">Выбрать фрагмент</string>
-    <string name="connection_error">Ошибка подключения</string>
+    <string name="fill_auth">Please enter your username and password</string>
+    <string name="access_denied">Please check your authorization details</string>
+    <string name="unavailable">Unfortunately, the service is unavailable now</string>
+    <string name="txt_choose_fragment">Select a fragment</string>
+    <string name="connection_error">Connection error</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="please_select_your_home">Пожалуйста, выберите ваш дом в настройках</string>
-    <string name="write_a_message">Введите сообщение!</string>
+    <string name="please_select_your_home">Please select your home in the settings</string>
+    <string name="write_a_message">Enter a message!</string>
     <string name="text" translatable="false">text</string>
     <string name="uri" translatable="false">http://10.0.2.2:5000</string>
     <string name="chat_socket" translatable="false">/chat</string>
@@ -31,26 +31,26 @@
     <string name="error" translatable="false">error</string>
     <string name="joined" translatable="false">joined</string>
     <string name="left" translatable="false">left</string>
-    <string name="enter_object_information">Введите информацию об объекте:</string>
+    <string name="enter_object_information">Enter information about the object:</string>
     <string name="ok">ОК</string>
-    <string name="error_no_name">Ошибка! Не задано название</string>
-    <string name="repeat">Повторить</string>
-    <string name="marker_is_added">Маркер добавлен!</string>
-    <string name="something_went_wrong">Что-то пошло не так.</string>
-    <string name="add_object">Добавить ещё один объект</string>
+    <string name="error_no_name">Error! No name specified</string>
+    <string name="repeat">Repeat</string>
+    <string name="marker_is_added">Marker is added!</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="add_object">Add one more object</string>
     <string name="territory" translatable="false">Territory</string>
     <string name="networking" translatable="false">networking</string>
     <string name="auth" translatable="false">Authorization</string>
-    <string name="choose_an_object">Выберите объект:</string>
-    <string name="bench">Скамья</string>
-    <string name="fence">Ограда</string>
-    <string name="streetlight">Фонарь</string>
-    <string name="tree">Дерево</string>
-    <string name="flowers">Клумба</string>
-    <string name="parking">Паркинг</string>
-    <string name="your_object">Создать\n свой объект</string>
+    <string name="choose_an_object">Select an object</string>
+    <string name="bench">Bench</string>
+    <string name="fence">Fence</string>
+    <string name="streetlight">Streetlight</string>
+    <string name="tree">Tree</string>
+    <string name="flowers">Flowerbed</string>
+    <string name="parking">Parking</string>
+    <string name="your_object">Create\n custom object</string>
     <string name="create_an_account">Create an account</string>
-    <string name="email">Email</string>
+    <string name="email" translatable="false">Email</string>
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
