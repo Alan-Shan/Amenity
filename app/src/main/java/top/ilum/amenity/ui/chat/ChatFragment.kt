@@ -78,7 +78,7 @@ class ChatFragment : Fragment() {
 
 
         try {
-            val manager = Manager(URI(getString(R.string.uri)))
+            val manager = Manager(URI("http://95.216.218.198"))
             chatSocket = manager.socket(getString(R.string.chat_socket))
             errorSocket = manager.socket(getString(R.string.error_socket))
         } catch (e: Exception) {
