@@ -329,7 +329,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 call: Call<List<top.ilum.amenity.data.Marker>>,
                 response: Response<List<top.ilum.amenity.data.Marker>>
             ) {
-                if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
+                if (response.isSuccessful) { // Get markers (Also handles empty response cases so null check is of no effect)
                     for (marker in response.body()!!) {
                         googleMap.addMarker(
                             MarkerOptions().position(

@@ -13,6 +13,7 @@ interface Endpoints {
         private const val TERRITORY = "/api/territories/{id}"
         private const val MARKERS = "/api/markers"
         private const val MARKER = "/api/markers/{id}"
+        private const val COMMUNITIES = "/api/communities"
 
 
     }
@@ -46,4 +47,11 @@ interface Endpoints {
     @Headers("Content-Type: application/json")
     @POST(MARKERS)
     fun postMarker(@Body data: Marker): Call<APIResult>
+
+    @GET(COMMUNITIES)
+    fun getCommunities(): Call<List<Communities>>
+
+    @Headers("Content-Type: application/json")
+    @POST(COMMUNITIES)
+    fun postCommunities(@Body data: Communities): Call<APIResult>
 }

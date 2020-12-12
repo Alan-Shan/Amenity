@@ -11,7 +11,7 @@ object Builder {
             .authenticator(AccessTokenAuthenticator(context)).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://95.216.218.198/")
+            .baseUrl("http://10.0.2.2:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
