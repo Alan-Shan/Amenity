@@ -15,8 +15,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.fragment_home.*
+import top.ilum.amenity.ui.home.HomeFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity(var flag: Boolean = false) : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -49,42 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         btnCreatePolygon.text = resources.getText(R.string.txt_choose_fragment)
-//        btnCreatePolygon.setOnClickListener {
-//            val fragment: HomeFragment = supportFragmentManager.findFragmentByTag("Home") as HomeFragment
-//            isMapMoveable = true
-//            btnCreatePolygon.visibility = View.GONE
-//            positions.removeAll(positions)
-//            googleMap.clear()
-//
-//            frame_layout.setOnTouchListener(View.OnTouchListener { _, motionEvent ->    //Draw polygon
-//                if (isMapMoveable) {
-//                    val point = Point(motionEvent.x.roundToInt(), motionEvent.y.roundToInt())
-//                    val latLng = googleMap.projection.fromScreenLocation(point)
-//                    val latitude = latLng.latitude
-//                    val longitude = latLng.longitude
-//
-//                    when (motionEvent.action) {
-//                        MotionEvent.ACTION_DOWN -> {
-//                            positions.add(LatLng(latitude, longitude))
-//                        }
-//                        MotionEvent.ACTION_MOVE -> {
-//                            positions.add(LatLng(latitude, longitude))
-//                        }
-//                        MotionEvent.ACTION_UP -> {
-//                            isMapMoveable = false
-//                            source = 0
-//                            destination = 1
-//                            btnCreatePolygon.visibility = View.VISIBLE
-//                            drawPolygon()
-//                            isMarker = true
-//                            showBottomSheet()
-//                        }
-//                    }
-//                }
-//
-//                return@OnTouchListener isMapMoveable
-//            })
-//        }
+//        flag = true
+//        val f: HomeFragment = supportFragmentManager.fragments[0] as HomeFragment
+//        f.onResume()
         return super.onOptionsItemSelected(item)
     }
 

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chat.ChatFragment">
+    tools:context=".ui.chat.ChatFragment"
+    android:background="@drawable/settings_background">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler"
@@ -41,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
-            android:text="Отправить"
+            android:text="@string/send"
             app:layout_constraintBottom_toBottomOf="@+id/chat_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/chat_input" />
