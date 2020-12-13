@@ -9,7 +9,7 @@
     <string name="menu_gallery">Chats</string>
     <string name="menu_slideshow">Settings</string>
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="prompt_email" translatable="false">E-mail</string>
+    <string name="prompt_email">Username</string>
     <string name="action_sign_in">Sign in</string>
     <string name="prompt_password">Password</string>
     <string name="base_url" translatable="false">http://95.216.218.198</string>
@@ -23,7 +23,6 @@
     <string name="please_select_your_home">Please select your home in the settings</string>
     <string name="write_a_message">Enter a message!</string>
     <string name="text" translatable="false">text</string>
-    <string name="uri" translatable="false">http://10.0.2.2:5000</string>
     <string name="chat_socket" translatable="false">/chat</string>
     <string name="error_socket" translatable="false">/errors</string>
     <string name="status" translatable="false">status</string>

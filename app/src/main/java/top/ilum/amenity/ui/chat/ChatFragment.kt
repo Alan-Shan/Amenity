@@ -78,7 +78,7 @@ class ChatFragment : Fragment() {
 
 
         try {
-            val manager = Manager(URI("http://95.216.218.198"))
+            val manager = Manager(URI(getString(R.string.base_url)))
             chatSocket = manager.socket(getString(R.string.chat_socket))
             errorSocket = manager.socket(getString(R.string.error_socket))
         } catch (e: Exception) {
@@ -104,7 +104,6 @@ class ChatFragment : Fragment() {
      */
     private val token: String = SharedPrefs.token as String
 
-    private val rs: String = SharedPrefs.room as String
 
     private val status = Emitter.Listener {
         val msg = gson.fromJson(it[0].toString(), Message::class.java)
@@ -118,7 +117,10 @@ class ChatFragment : Fragment() {
     }
 
     private var onConnect = Emitter.Listener { //Sent on connection
-        chatSocket.emit(getString(R.string.joined), gson.toJson(SocketData(rs, token)))
+        chatSocket.emit(
+            getString(R.string.joined),
+            gson.toJson(room?.let { it1 -> SocketData(it1, token) })
+        )
 
     }
 

@@ -35,4 +35,5 @@
     <string name="house">Дом:</string>
     <string name="your_data">Ваши данные:</string>
     <string name="send">Отправить</string>
+    <string name="prompt_email">Имя пользователя</string>
 </resources>

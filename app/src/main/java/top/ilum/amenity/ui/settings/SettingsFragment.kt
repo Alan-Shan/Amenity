@@ -43,7 +43,6 @@ class SettingsFragment : Fragment() {
                 response: Response<List<Communities>>
             ) {
                 if (response.isSuccessful) { // Get communities (Also handles empty response cases so null check is of no effect)
-                    Log.e("resp", response.body().toString())
                     for (comm in response.body()!!) {
                         communities.add(comm.name)
                         communitesInternal.add(Communities(id = comm.id, name = comm.name))

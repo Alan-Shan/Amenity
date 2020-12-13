@@ -37,12 +37,16 @@ class SignUpActivity : AppCompatActivity() {
             return name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()
         }
 
+        fun hide() {
+            val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (keyboard.isAcceptingText) {
+                keyboard.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            }
+        }
+
         findViewById<Button>(R.id.btn_create_account).setOnClickListener {
             if (!checker()) {
-                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                if (keyboard.isAcceptingText) {
-                    keyboard.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-                }
+                hide()
                 Snackbar.make(it, "Заполните все поля", Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -66,13 +70,19 @@ class SignUpActivity : AppCompatActivity() {
             }
             call.enqueue(object : retrofit2.Callback<APIResult> {
                 override fun onFailure(call: Call<APIResult>, t: Throwable) {
+                    hide()
                     Snackbar.make(it, "Что-то пошло не так.", Snackbar.LENGTH_LONG).show()
                 }
 
                 override fun onResponse(call: Call<APIResult>, response: Response<APIResult>) {
                     if (response.isSuccessful) {
+                        hide()
                         Snackbar.make(it, "Вы зарегистрированы!", Snackbar.LENGTH_LONG).show()
                         pushLogin()
+                    } else {
+                        hide()
+                        Snackbar.make(it, "Имя пользователя уже занято.", Snackbar.LENGTH_LONG)
+                            .show()
                     }
                 }
 
